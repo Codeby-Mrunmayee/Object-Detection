@@ -61,23 +61,7 @@ const About = () => (
         </div>
       </GlassCard>
 
-      {/* Tech Stack */}
-      <GlassCard>
-        <h2 className="font-display text-lg tracking-widest neon-text-cyan mb-8 text-center">
-          TECHNOLOGIES
-        </h2>
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-          {techStack.map((tech, i) => (
-            <div key={i} className="p-4 rounded-lg border border-border/20 bg-secondary/10 hover:border-border/40 transition-all duration-300">
-              <div className="flex items-center gap-3 mb-2">
-                <Layers className={`h-4 w-4 ${tech.color}`} />
-                <h3 className={`font-display text-sm font-bold tracking-wider ${tech.color}`}>{tech.name}</h3>
-              </div>
-              <p className="font-body text-sm text-muted-foreground">{tech.desc}</p>
-            </div>
-          ))}
-        </div>
-      </GlassCard>
+      
     </div>
   </div>
 );

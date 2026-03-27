@@ -2,6 +2,8 @@ import { Download, RotateCcw, ShieldAlert, Eye, Camera, Wifi, Radio, Lightbulb }
 import GlassCard from "@/components/GlassCard";
 import RiskGauge from "@/components/RiskGauge";
 import { Button } from "@/components/ui/button";
+import jsPDF from "jspdf";
+import html2canvas from "html2canvas";
 import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, RadarChart, PolarGrid, PolarAngleAxis, Radar, Cell } from "recharts";
 
 const riskFactors = [
@@ -23,17 +25,17 @@ const confidenceData = [
 ];
 
 const detectedObjects = [
-  { name: "Small camera lens (behind vent)", confidence: 94, risk: "high" as const },
-  { name: "Unusual IR reflection (bookshelf)", confidence: 87, risk: "high" as const },
+  { name: "Small camera lens", confidence: 94, risk: "high" as const },
+  { name: "Unusual IR reflection", confidence: 87, risk: "high" as const },
   { name: "Hidden wireless transmitter", confidence: 72, risk: "medium" as const },
-  { name: "Modified smoke detector", confidence: 65, risk: "medium" as const },
+  
 ];
 
 const suggestions = [
   "Inspect the air vent on the east wall for a potential pinhole camera.",
-  "Check the bookshelf area for IR-emitting devices using your phone camera.",
+  "Check doorbell area for IR-emitting devices using your phone camera.",
   "Scan for RF signals near the desk area using a bug detector.",
-  "Verify the smoke detector is a standard model — compare with manufacturer specs.",
+  
 ];
 
 const Analyze = () => {
@@ -67,9 +69,10 @@ const Analyze = () => {
         </div>
 
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-6">
+          
           {/* Risk Gauge - Center piece */}
-          <div className="lg:col-span-4">
-            <GlassCard glow="red" className="flex flex-col items-center justify-center h-full">
+          <div className="lg:col-span-6">
+            <GlassCard glow="red" hover className="flex flex-col items-center justify-center h-full">
               <RiskGauge score={72} size={240} />
               <p className="font-mono text-xs text-muted-foreground mt-4 text-center">
                 Analysis completed at {new Date().toLocaleTimeString()}
@@ -78,7 +81,7 @@ const Analyze = () => {
           </div>
 
           {/* Detected Objects */}
-          <div className="lg:col-span-4">
+          <div className="lg:col-span-6">
             <GlassCard hover className="h-full">
               <h3 className="font-display text-sm tracking-widest text-muted-foreground mb-4 flex items-center gap-2">
                 <ShieldAlert className="h-4 w-4 neon-text-red" />
@@ -111,47 +114,7 @@ const Analyze = () => {
             </GlassCard>
           </div>
 
-          {/* Risk Heatmap placeholder */}
-          <div className="lg:col-span-4">
-            <GlassCard hover className="h-full">
-              <h3 className="font-display text-sm tracking-widest text-muted-foreground mb-4 flex items-center gap-2">
-                <Eye className="h-4 w-4 neon-text-yellow" />
-                RISK HEATMAP
-              </h3>
-              <div className="relative h-56 rounded-lg overflow-hidden bg-secondary/30 border border-border/30">
-                {/* Simulated heatmap grid */}
-                <div className="absolute inset-0 grid grid-cols-6 grid-rows-4 gap-0.5 p-2">
-                  {Array.from({ length: 24 }).map((_, i) => {
-                    const heat = [85, 20, 15, 60, 10, 30, 10, 70, 5, 15, 45, 20, 5, 10, 55, 30, 20, 5, 10, 15, 25, 10, 5, 35][i];
-                    const hue = heat > 60 ? 0 : heat > 30 ? 45 : 150;
-                    return (
-                      <div
-                        key={i}
-                        className="rounded-sm transition-all duration-300"
-                        style={{
-                          background: `hsla(${hue}, 100%, 50%, ${heat / 100 * 0.6})`,
-                          boxShadow: heat > 50 ? `0 0 10px hsla(${hue}, 100%, 50%, 0.3)` : "none",
-                        }}
-                      />
-                    );
-                  })}
-                </div>
-                <div className="absolute bottom-2 right-2 flex items-center gap-2 font-mono text-[10px] text-muted-foreground">
-                  <span>LOW</span>
-                  <div className="flex gap-0.5">
-                    {[150, 120, 60, 45, 0].map((h) => (
-                      <div key={h} className="w-3 h-2 rounded-sm" style={{ background: `hsl(${h}, 100%, 50%)` }} />
-                    ))}
-                  </div>
-                  <span>HIGH</span>
-                </div>
-              </div>
-              <div className="mt-3 flex items-center gap-2">
-                <Camera className="h-3 w-3 text-neon-red pulse-glow" />
-                <span className="font-mono text-xs text-muted-foreground">2 hotspots detected</span>
-              </div>
-            </GlassCard>
-          </div>
+          
 
           {/* Risk Factor Breakdown */}
           <div className="lg:col-span-6">
